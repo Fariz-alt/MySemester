@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MyStudyHub</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide-react/dist/lucide-react.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@latest/dist/lucide.js"></script>
+    
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 260;
+            --text-dark: #181C32;
+            --text-light: #5E6278;
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --danger-color: #F1416C;
+            --warning-color: #FFC700;
+            --success-color: #50CD89;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 90%, 95%), hsl(var(--secondary-hue), 90%, 95%));
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* === SIDEBAR NAVIGATION === */
+        .sidebar {
+            width: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: hsl(var(--primary-hue), 50%, 50%);
+            margin-bottom: 40px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            width: 100%;
+        }
+
+        .nav-item {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 0;
+            color: var(--text-light);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: hsl(var(--primary-hue), 80%, 50%);
+        }
+        
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 80%;
+            background-color: hsl(var(--primary-hue), 80%, 50%);
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* === DASHBOARD CONTENT === */
+        .dashboard-content {
+            flex-grow: 1;
+            padding-left: 30px;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .header-title p {
+            color: var(--text-light);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 250px;
+            padding: 10px 15px 10px 40px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            font-family: 'Poppins';
+            font-size: 0.9rem;
+        }
+        
+        .search-bar input:focus {
+            outline: 2px solid hsl(var(--primary-hue), 80%, 70%);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .profile-avatar img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .schedule-list li, .deadline-list li {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+            list-style: none;
+        }
+        .schedule-list li:last-child, .deadline-list li:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-item .time {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 80%, 50%);
+            min-width: 100px;
+        }
+        
+        .deadline-item .dot {
+            width: 8px;
+            height: 25px;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .quick-notes textarea {
+            width: 100%;
+            height: 100px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            resize: vertical;
+            font-family: 'Poppins';
+            color: var(--text-dark);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar-fill {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, hsl(var(--primary-hue), 80%, 60%), hsl(var(--secondary-hue), 80%, 60%));
+            border-radius: 6px;
+        }
+        
+        .no-schedule-message {
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-bar input { width: 200px; }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .sidebar {
+                flex-direction: row;
+                width: 100%;
+                height: 70px;
+                justify-content: space-around;
+                margin-bottom: 20px;
+            }
+            .sidebar .logo, .sidebar .nav-item:last-child { display: none; }
+            .nav-link.active::before { width: 50%; height: 4px; left: 50%; top: auto; bottom: 0; transform: translateX(-50%); border-radius: 5px 5px 0 0; }
+            .dashboard-content { padding-left: 0; }
+            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <div class="logo">S.</div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link active"><i data-lucide="layout-grid"></i></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="book-open"></i></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="check-square"></i></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="calendar"></i></a></li>
+                <li class="nav-item" style="margin-top: auto;"><a href="#" class="nav-link"><i data-lucide="settings"></i></a></li>
+            </ul>
+        </nav>
+
+        <main class="dashboard-content">
+            <header class="dashboard-header">
+                <div class="header-title">
+                    <h1>Selamat Datang, Mahasiswa!</h1>
+                    <p id="current-date">Senin, 1</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <i data-lucide="search"></i>
+                        <input type="text" placeholder="Cari mata kuliah...">
+                    </div>
+                    <div class="profile-avatar">
+                        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-grid">
+                <div class="left-column" style="display: flex; flex-direction: column; gap: 25px;">
+                    <div class="card">
+                        <h2 class="card-title"><i data-lucide="calendar-clock"></i> Jadwal Hari Ini</h2>
+                        <ul class="schedule-list" id="schedule-list">
+                            <li class="schedule-item">
+                                <span class="time">19:00</span>
+                                <div>
+                                    <div style="font-weight: 500;">Sistem Terdistribusi</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Ruang 305 | Prof. Dr. Indah P.</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h2 class="card-title"><i data-lucide="trending-up"></i> Progress Semester</h2>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-light);">
+                            <span>Minggu ke-8 dari 16</span>
+                            <span style="font-weight: 600; color: var(--text-dark);">50%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="right-column" style="display: flex; flex-direction: column; gap: 25px;">
+                     <div class="card">
+                        <h2 class="card-title"><i data-lucide="alarm-check"></i> Deadline Terdekat</h2>
+                        <ul class="deadline-list">
+                            <li class="deadline-item">
+                                <span class="dot" style="background-color: var(--danger-color);"></span>
+                                <div>
+                                    <div style="font-weight: 500;">Laporan Akhir Praktikum</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 2 Hari</div>
+                                </div>
+                            </li>
+                            <li class="deadline-item">
+                                <span class="dot" style="background-color: var(--warning-color);"></span>
+                                <div>
+                                    <div style="font-weight: 500;">Presentasi Kelompok RPL</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 4 Hari</div>
+                                </div>
+                            </li>
+                             <li class="deadline-item">
+                                <span class="dot" style="background-color: var(--success-color);"></span>
+                                <div>
+                                    <div style="font-weight: 500;">Kuis Mingguan Basis Data</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 6 Hari</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card quick-notes">
+                        <h2 class="card-title"><i data-lucide="file-pen-line"></i> Catatan Cepat</h2>
+                        <textarea placeholder="Tulis ide atau pengingat penting..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // === LOGIKA JADWAL OTOMATIS ===
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- 1. PUSAT DATA JADWAL ---
+            // Anda bisa mengubah, menambah, atau menghapus jadwal di sini.
+            // Hari: 0 = Minggu, 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu
+            const scheduleData = [
+                { day: 1, time: '19:00', title: 'Sistem Terdistribusi', details: 'Ruang 305 | Prof. Dr. Indah P.' },
+                { day: 1, time: '21:00', title: 'Rapat Proyek Kelompok', details: 'Online via Google Meet' },
+                { day: 2, time: '08:00', title: 'Basis Data Lanjut', details: 'Lab Komputer 1 | Bpk. Ahmad S.' },
+                { day: 2, time: '10:00', title: 'Rekayasa Perangkat Lunak', details: 'Ruang 201 | Ibu Rina M.' },
+                { day: 3, time: '13:00', title: 'Kecerdasan Buatan', details: 'Auditorium | Tim Dosen' },
+                { day: 4, time: '09:00', title: 'Jaringan Komputer', details: 'Lab Jaringan | Bpk. Budi W.' },
+                { day: 4, time: '14:00', title: 'Praktikum Jaringan', details: 'Lab Jaringan | Asisten Dosen' },
+                { day: 5, time: '08:30', title: 'Keamanan Informasi', details: 'Ruang 404 | Ibu Siti H.' },
+            ];
+
+            // --- 2. LOGIKA MENAMPILKAN JADWAL ---
+            const scheduleList = document.getElementById('schedule-list');
+            const today = new Date().getDay(); // Mendapatkan hari ini (angka 0-6)
+            
+            // Filter data jadwal untuk mendapatkan jadwal hari ini saja
+            const todaySchedule = scheduleData.filter(item => item.day === today);
+            
+            // Kosongkan daftar jadwal di HTML
+            scheduleList.innerHTML = ''; 
+
+            if (todaySchedule.length > 0) {
+                // Jika ada jadwal, buat elemen list untuk setiap jadwal
+                todaySchedule.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('schedule-item');
+                    listItem.innerHTML = `
+                        <span class="time">${item.time}</span>
+                        <div>
+                            <div style="font-weight: 500;">${item.title}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">${item.details}</div>
+                        </div>
+                    `;
+                    scheduleList.appendChild(listItem);
+                });
+            } else {
+                // Jika tidak ada jadwal, tampilkan pesan
+                scheduleList.innerHTML = '<p class="no-schedule-message">Tidak ada jadwal hari ini. Selamat beristirahat! 🥳</p>';
+            }
+
+            // --- 3. LOGIKA MEMPERBARUI TANGGAL DI HEADER ---
+            const dateElement = document.getElementById('current-date');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayString = new Date().toLocaleDateString('id-ID', options);
+            dateElement.textContent = todayString;
+        });
+
+    </script>
+</body>
+</html>
