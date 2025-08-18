@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Mata Kuliah - StudentHub</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* --- THEME & GLOBAL STYLES --- */
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #0056b3;
+            --background-color: #F8FAFC;
+            --card-bg-color: #FFFFFF;
+            --text-color: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --success-color: #16A34A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--background-color); color: var(--text-color); min-height: 100vh; display: flex; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background: var(--card-bg-color); border-right: 1px solid var(--border-color); padding: 2rem 1.5rem; display: flex; flex-direction: column; }
+        .sidebar-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+        .sidebar-header .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+        .sidebar nav a { display: flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        .sidebar nav a i { width: 20px; text-align: center; }
+        .sidebar nav a:hover, .sidebar nav a.active { background-color: var(--primary-color); color: #fff; }
+        .sidebar nav a.active i, .sidebar nav a:hover i { color: #fff; }
+        .sidebar .profile { margin-top: auto; display: flex; align-items: center; gap: 1rem; background-color: var(--background-color); padding: 1rem; border-radius: 8px; }
+        .profile img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .profile-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-color); }
+        .profile-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex-grow: 1; padding: 2rem; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .header-title h1 { font-size: 2rem; font-weight: 700; }
+        .header-title p { color: var(--text-muted); }
+        
+        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+        .btn-primary { background-color: var(--primary-color); color: #fff; }
+        .btn-primary:hover { background-color: var(--secondary-color); }
+        .btn-secondary { background-color: var(--border-color); color: var(--text-color); }
+        .btn-secondary:hover { background-color: #d1d9e4; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-color); }
+        .btn-outline:hover { background: var(--background-color); }
+
+        /* --- COURSE GRID --- */
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        .course-card { background: var(--card-bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .course-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .course-card .course-code { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .course-info { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .course-info div { display: flex; align-items: center; gap: 0.75rem; color: var(--text-muted); }
+        .course-info div span { color: var(--text-color); font-weight: 500; }
+        .course-info i { width: 16px; text-align: center; }
+        
+        .progress-section { margin-top: auto; } /* Pushes to bottom */
+        .progress-section p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+        .progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 99px; height: 8px; }
+        .progress-bar { height: 100%; background-color: var(--success-color); border-radius: 99px; }
+        .card-actions { border-top: 1px solid var(--border-color); margin-top: 1.5rem; padding-top: 1.5rem; display: flex; gap: 0.75rem; }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg-color); padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h2 { font-size: 1.5rem; }
+        .close-modal { background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-muted); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.2); }
+        .form-row { display: flex; gap: 1rem; }
+        .form-row .form-group { flex: 1; }
+        .modal-footer { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) { .sidebar { display: none; } .form-row { flex-direction: column; gap: 0; } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fa-solid fa-graduation-cap"></i><span class="logo">StudentHub</span></div>
+        <nav>
+            <a href="index.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            <a href="Course.html" class="active"><i class="fa-solid fa-book"></i><span>Mata Kuliah</span></a>
+            <a href="Jadwal.html"><i class="fa-solid fa-calendar-days"></i><span>Jadwal</span></a>
+            <a href="Keti.html"><i class="fa-solid fa-file-lines"></i><span>Keti</span></a>
+            <a href="IPK.html"><i class="fa-solid fa-calculator"></i><span>Kalkulator IPK</span></a>
+        </nav>
+        <div class="profile">
+            <img src="https://i.pravatar.cc/150?img=32" alt="Foto Profil">
+            <div class="profile-info"><h4></h4><p>Semester 5</p></div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <div class="header-title">
+                <h1>Mata Kuliah</h1>
+                <p>Daftar semua mata kuliah yang kamu ambil semester ini.</p>
+            </div>
+        </header>
+
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Sosiometri</h3>
+                <p class="course-code">FF-205</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>NA.</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Senin, 07:30 - 10.00</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="1.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Statistika PB I</h3>
+                <p class="course-code">FF-306</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>NA.</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Senin, 10.05 - 12.35</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="2.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+        </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Regresi Nonparametrik</h3>
+                <p class="course-code">FF-306</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>NA.</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Selasa, 10:05 - 12.35</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="3.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Rancangan Percobaan</h3>
+                <p class="course-code">FF-206</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>Drs. Muhammad Nusrang, M.Si.</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Selasa, 13:10 - 15.40</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="4.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Sistem Informasi Manajemen</h3>
+                <p class="course-code">Online</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span></span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Rabu, 13:10 - 15.40</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="5.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Model Linear</h3>
+                <p class="course-code">FF-205</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>Isma Muthahharah, S.Si., M.Si</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Kamis, 07:30 - 10.00</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="6.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Analisis Survival</h3>
+                <p class="course-code">FF-205</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>Aswi, S.Pd., M.Si. Ph.D</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Kamis, 10:05 - 12.35</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="7.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+        <section class="course-grid">
+            <article class="course-card">
+                <h3>Data Mining</h3>
+                <p class="course-code">FF-205</p>
+                <div class="course-info">
+                    <div><i class="fa-solid fa-user-tie"></i> Dosen: <span>NA</span></div>
+                    <div><i class="fa-solid fa-clock"></i> Jadwal: <span>Kamis, 13.10 - 15.40</span></div>
+                    <div><i class="fa-solid fa-star"></i> SKS: <span>3</span></div>
+                </div>
+                <div class="progress-section">
+                    <p><span>Progress Perkuliahan</span><span>0%</span></p>
+                    <div class="progress-bar-container"><div class="progress-bar" style="width: 0%;"></div></div>
+                </div>
+                <div class="card-actions">
+                    <a href="8.html" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </article>
+            </section>
+    </main>
+
+    <div class="modal-overlay" id="add-course-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tambah Mata Kuliah Baru</h2>
+                <button class="close-modal" id="close-modal-btn">&times;</button>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="course-name">Nama Mata Kuliah</label>
+                    <input type="text" id="course-name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="course-code">Kode MK</label>
+                        <input type="text" id="course-code">
+                    </div>
+                    <div class="form-group">
+                        <label for="course-sks">Jumlah SKS</label>
+                        <input type="number" id="course-sks" min="1" max="6">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lecturer-name">Nama Dosen</label>
+                    <input type="text" id="lecturer-name">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const addCourseBtn = document.getElementById('add-course-btn');
+        const addCourseModal = document.getElementById('add-course-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+
+        const openModal = () => addCourseModal.style.display = 'flex';
+        const closeModal = () => addCourseModal.style.display = 'none';
+
+        addCourseBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        
+        // Close modal if user clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === addCourseModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
