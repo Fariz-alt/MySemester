@@ -3,435 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - MyStudyHub</title>
+    <title>StudentHub - Dashboard (Light Mode)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <script src="https://unpkg.com/lucide-react/dist/lucide-react.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide-static@latest/dist/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
         :root {
-            --primary-hue: 210;
-            --secondary-hue: 260;
-            --text-dark: #181C32;
-            --text-light: #5E6278;
-            --glass-bg: rgba(255, 255, 255, 0.5);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --danger-color: #F1416C;
-            --warning-color: #FFC700;
-            --success-color: #50CD89;
+            --primary-color: #007BFF; /* Biru yang lebih vibrant */
+            --secondary-color: #0056b3;
+            --background-color: #F8FAFC; /* Latar belakang off-white */
+            --card-bg-color: #FFFFFF; /* Kartu putih bersih */
+            --text-color: #1E293B; /* Teks gelap (charcoal) */
+            --text-muted: #64748B; /* Teks abu-abu */
+            --border-color: #E2E8F0; /* Border abu-abu terang */
+            --success-color: #16A34A;
+            --warning-color: #F59E0B;
+            --danger-color: #DC2626;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, hsl(var(--primary-hue), 90%, 95%), hsl(var(--secondary-hue), 90%, 95%));
-            color: var(--text-dark);
+            background-color: var(--background-color);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
         }
 
-        .main-container {
-            display: flex;
-            width: 100%;
-            padding: 20px;
-        }
-
-        /* === SIDEBAR NAVIGATION === */
         .sidebar {
-            width: 80px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px 0;
+            width: 260px;
+            background: var(--card-bg-color);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
             transition: width 0.3s ease;
         }
-        
-        .sidebar .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: hsl(var(--primary-hue), 50%, 50%);
-            margin-bottom: 40px;
-        }
-        
-        .nav-menu {
-            list-style: none;
-            width: 100%;
-        }
 
-        .nav-item {
-            margin-bottom: 20px;
-        }
-
-        .nav-link {
+        .sidebar-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 15px 0;
-            color: var(--text-light);
-            text-decoration: none;
-            position: relative;
-        }
-
-        .nav-link.active, .nav-link:hover {
-            color: hsl(var(--primary-hue), 80%, 50%);
+            gap: 1rem;
+            margin-bottom: 3rem;
         }
         
-        .nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 5px;
-            height: 80%;
-            background-color: hsl(var(--primary-hue), 80%, 50%);
-            border-radius: 0 5px 5px 0;
+        .sidebar-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
         }
 
-        /* === DASHBOARD CONTENT === */
-        .dashboard-content {
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar nav a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar nav a:hover, .sidebar nav a.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .sidebar nav a.active i, .sidebar nav a:hover i {
+            color: #fff;
+        }
+
+        .sidebar .profile {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--background-color);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .profile-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-color); }
+        .profile-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Main Content */
+        .main-content {
             flex-grow: 1;
-            padding-left: 30px;
+            padding: 2rem;
             overflow-y: auto;
         }
 
-        /* Header */
-        .dashboard-header {
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
         .header-title h1 {
             font-size: 2rem;
             font-weight: 700;
-            margin: 0;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
         }
         
-        .header-title p {
-            color: var(--text-light);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
         .search-bar {
             position: relative;
         }
-
+        
         .search-bar input {
-            width: 250px;
-            padding: 10px 15px 10px 40px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            font-family: 'Poppins';
-            font-size: 0.9rem;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            color: var(--text-color);
+            width: 300px;
+            outline: none;
+            transition: all 0.3s ease;
         }
         
         .search-bar input:focus {
-            outline: 2px solid hsl(var(--primary-hue), 80%, 70%);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
         }
-
+        
         .search-bar i {
             position: absolute;
-            left: 15px;
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-light);
+            color: var(--text-muted);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         
-        .profile-avatar img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid white;
-        }
-
-        /* Main Grid */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: auto auto;
-            gap: 25px;
-        }
-
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            background: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
         }
 
-        .card-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .card-icon {
+            font-size: 1.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: inline-block;
         }
         
-        .schedule-list li, .deadline-list li {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--glass-border);
-            list-style: none;
+        .card.courses .card-icon { background-color: rgba(0, 123, 255, 0.1); color: var(--primary-color); }
+        .card.tasks .card-icon { background-color: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .card.credits .card-icon { background-color: rgba(22, 163, 74, 0.1); color: var(--success-color); }
+        .card.gpa .card-icon { background-color: rgba(220, 38, 38, 0.1); color: var(--danger-color); }
+        
+        .card h3 {
+            font-size: 2rem;
+            font-weight: 700;
         }
-        .schedule-list li:last-child, .deadline-list li:last-child {
+        
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .card-table h2, .card-list h2 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .schedule-table th, .schedule-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .schedule-table th { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
+        .schedule-table td { font-weight: 500; }
+        .schedule-table .matkul { color: var(--secondary-color); font-weight: 600; }
+        .schedule-table .ruang { font-size: 0.9rem; color: var(--text-muted); }
+        
+        .task-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .task-list-item:last-child {
             border-bottom: none;
         }
-
-        .schedule-item .time {
+        
+        .task-info h4 { font-weight: 600; font-size: 0.9rem; }
+        .task-info p { font-size: 0.8rem; color: var(--text-muted); }
+        .task-due .deadline {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: hsl(var(--primary-hue), 80%, 50%);
-            min-width: 100px;
         }
         
-        .deadline-item .dot {
-            width: 8px;
-            height: 25px;
-            border-radius: 4px;
-            margin-right: 15px;
-        }
-
-        .quick-notes textarea {
-            width: 100%;
-            height: 100px;
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 15px;
-            resize: vertical;
-            font-family: 'Poppins';
-            color: var(--text-dark);
-        }
+        .deadline.high { background-color: rgba(220, 38, 38, 0.1); color: var(--danger-color); }
+        .deadline.medium { background-color: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .deadline.low { background-color: rgba(22, 163, 74, 0.1); color: var(--success-color); }
         
-        .progress-bar {
-            height: 12px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .progress-bar-fill {
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, hsl(var(--primary-hue), 80%, 60%), hsl(var(--secondary-hue), 80%, 60%));
-            border-radius: 6px;
-        }
-        
-        .no-schedule-message {
-            color: var(--text-light);
-            text-align: center;
-            padding: 20px 0;
-        }
-
         /* Responsive */
-        @media (max-width: 1200px) {
-            .main-grid {
+        @media (max-width: 1024px) {
+            .content-grid {
                 grid-template-columns: 1fr;
             }
-            .search-bar input { width: 200px; }
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar-header .logo, .sidebar nav a span, .profile-info {
+                display: none;
+            }
+            .sidebar-header {
+                justify-content: center;
+            }
         }
-
+        
         @media (max-width: 768px) {
-            .main-container {
+            .main-content {
+                padding: 1.5rem;
+            }
+            header {
                 flex-direction: column;
-                padding: 10px;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .search-bar input {
+                width: 100%;
             }
             .sidebar {
-                flex-direction: row;
-                width: 100%;
-                height: 70px;
-                justify-content: space-around;
-                margin-bottom: 20px;
+                display: none;
             }
-            .sidebar .logo, .sidebar .nav-item:last-child { display: none; }
-            .nav-link.active::before { width: 50%; height: 4px; left: 50%; top: auto; bottom: 0; transform: translateX(-50%); border-radius: 5px 5px 0 0; }
-            .dashboard-content { padding-left: 0; }
-            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
-
     </style>
 </head>
 <body>
-
-    <div class="main-container">
-        <nav class="sidebar">
-            <div class="logo">S.</div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="#" class="nav-link active"><i data-lucide="layout-grid"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="book-open"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="check-square"></i></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i data-lucide="calendar"></i></a></li>
-                <li class="nav-item" style="margin-top: auto;"><a href="#" class="nav-link"><i data-lucide="settings"></i></a></li>
-            </ul>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span class="logo">StudentHub</span>
+        </div>
+        <nav>
+            <a href="#" class="active"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            <a href="#"><i class="fa-solid fa-book"></i><span>Mata Kuliah</span></a>
+            <a href="#"><i class="fa-solid fa-list-check"></i><span>Tugas</span></a>
+            <a href="#"><i class="fa-solid fa-calendar-days"></i><span>Jadwal</span></a>
+            <a href="#"><i class="fa-solid fa-file-lines"></i><span>Catatan</span></a>
+            <a href="#"><i class="fa-solid fa-calculator"></i><span>Kalkulator IPK</span></a>
         </nav>
+        <div class="profile">
+            <img src="https://i.pravatar.cc/150?img=32" alt="Foto Profil">
+            <div class="profile-info">
+                <h4>Ahmad S.</h4>
+                <p>Semester 5</p>
+            </div>
+        </div>
+    </aside>
 
-        <main class="dashboard-content">
-            <header class="dashboard-header">
-                <div class="header-title">
-                    <h1>Selamat Datang, Mahasiswa!</h1>
-                    <p id="current-date">Senin, 1</p>
-                </div>
-                <div class="header-actions">
-                    <div class="search-bar">
-                        <i data-lucide="search"></i>
-                        <input type="text" placeholder="Cari mata kuliah...">
-                    </div>
-                    <div class="profile-avatar">
-                        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Avatar">
-                    </div>
-                </div>
-            </header>
+    <main class="main-content">
+        <header>
+            <div class="header-title">
+                <h1>Selamat Datang Di Semester 5!</h1>
+                <p>Ini ringkasan aktivitas akademismu hari ini.</p>
+            </div>
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Cari mata kuliah, tugas...">
+            </div>
+        </header>
 
-            <div class="main-grid">
-                <div class="left-column" style="display: flex; flex-direction: column; gap: 25px;">
-                    <div class="card">
-                        <h2 class="card-title"><i data-lucide="calendar-clock"></i> Jadwal Hari Ini</h2>
-                        <ul class="schedule-list" id="schedule-list">
-                            <li class="schedule-item">
-                                <span class="time">19:00</span>
-                                <div>
-                                    <div style="font-weight: 500;">Sistem Terdistribusi</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-light);">Ruang 305 | Prof. Dr. Indah P.</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <h2 class="card-title"><i data-lucide="trending-up"></i> Progress Semester</h2>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-light);">
-                            <span>Minggu ke-8 dari 16</span>
-                            <span style="font-weight: 600; color: var(--text-dark);">50%</span>
+        <section class="summary-cards">
+            <div class="card courses">
+                <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+                <h3>8</h3>
+                <p>Mata Kuliah Semester Ini</p>
+            </div>
+            <div class="card tasks">
+                <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                <h3>0</h3>
+                <p>Tugas Belum Selesai</p>
+            </div>
+        </section>
+
+        <section class="content-grid">
+            <div class="card card-table">
+                <h2>Jadwal Hari Ini</h2>
+                <table class="schedule-table">
+                    <tbody>
+                        <tr>
+                            <td>07:30 - 10:00</td>
+                            <td class="matkul">Sosiometri</td>
+                            <td class="ruang">FF 205 </td>
+                            <td class="osen">---</td>
+                        </tr>
+                        <tr>
+                            <td>10:00 - 11:40</td>
+                            <td class="matkul">Statistika PB I</td>
+                            <td class="ruang">FF 306</td>
+                            <td class="osen">--- </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card card-list">
+                <h2>Tugas Mendatang</h2>
+                <div class="task-list">
+                    <div class="task-list-item">
+                        <div class="task-info">
+                            <h4>Belum Ada Tugas</h4>
+                            <p>Tunggu Aja</p>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill"></div>
+                        <div class="task-due">
+                            <span class="deadline high">-- Hari Lagi</span>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="right-column" style="display: flex; flex-direction: column; gap: 25px;">
-                     <div class="card">
-                        <h2 class="card-title"><i data-lucide="alarm-check"></i> Deadline Terdekat</h2>
-                        <ul class="deadline-list">
-                            <li class="deadline-item">
-                                <span class="dot" style="background-color: var(--danger-color);"></span>
-                                <div>
-                                    <div style="font-weight: 500;">Laporan Akhir Praktikum</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 2 Hari</div>
-                                </div>
-                            </li>
-                            <li class="deadline-item">
-                                <span class="dot" style="background-color: var(--warning-color);"></span>
-                                <div>
-                                    <div style="font-weight: 500;">Presentasi Kelompok RPL</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 4 Hari</div>
-                                </div>
-                            </li>
-                             <li class="deadline-item">
-                                <span class="dot" style="background-color: var(--success-color);"></span>
-                                <div>
-                                    <div style="font-weight: 500;">Kuis Mingguan Basis Data</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-light);">Sisa 6 Hari</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card quick-notes">
-                        <h2 class="card-title"><i data-lucide="file-pen-line"></i> Catatan Cepat</h2>
-                        <textarea placeholder="Tulis ide atau pengingat penting..."></textarea>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
-
-    <script>
-        lucide.createIcons();
-
-        // === LOGIKA JADWAL OTOMATIS ===
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // --- 1. PUSAT DATA JADWAL ---
-            // Anda bisa mengubah, menambah, atau menghapus jadwal di sini.
-            // Hari: 0 = Minggu, 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu
-            const scheduleData = [
-                { day: 1, time: '19:00', title: 'Sistem Terdistribusi', details: 'Ruang 305 | Prof. Dr. Indah P.' },
-                { day: 1, time: '21:00', title: 'Rapat Proyek Kelompok', details: 'Online via Google Meet' },
-                { day: 2, time: '08:00', title: 'Basis Data Lanjut', details: 'Lab Komputer 1 | Bpk. Ahmad S.' },
-                { day: 2, time: '10:00', title: 'Rekayasa Perangkat Lunak', details: 'Ruang 201 | Ibu Rina M.' },
-                { day: 3, time: '13:00', title: 'Kecerdasan Buatan', details: 'Auditorium | Tim Dosen' },
-                { day: 4, time: '09:00', title: 'Jaringan Komputer', details: 'Lab Jaringan | Bpk. Budi W.' },
-                { day: 4, time: '14:00', title: 'Praktikum Jaringan', details: 'Lab Jaringan | Asisten Dosen' },
-                { day: 5, time: '08:30', title: 'Keamanan Informasi', details: 'Ruang 404 | Ibu Siti H.' },
-            ];
-
-            // --- 2. LOGIKA MENAMPILKAN JADWAL ---
-            const scheduleList = document.getElementById('schedule-list');
-            const today = new Date().getDay(); // Mendapatkan hari ini (angka 0-6)
-            
-            // Filter data jadwal untuk mendapatkan jadwal hari ini saja
-            const todaySchedule = scheduleData.filter(item => item.day === today);
-            
-            // Kosongkan daftar jadwal di HTML
-            scheduleList.innerHTML = ''; 
-
-            if (todaySchedule.length > 0) {
-                // Jika ada jadwal, buat elemen list untuk setiap jadwal
-                todaySchedule.forEach(item => {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('schedule-item');
-                    listItem.innerHTML = `
-                        <span class="time">${item.time}</span>
-                        <div>
-                            <div style="font-weight: 500;">${item.title}</div>
-                            <div style="font-size: 0.9rem; color: var(--text-light);">${item.details}</div>
-                        </div>
-                    `;
-                    scheduleList.appendChild(listItem);
-                });
-            } else {
-                // Jika tidak ada jadwal, tampilkan pesan
-                scheduleList.innerHTML = '<p class="no-schedule-message">Tidak ada jadwal hari ini. Selamat beristirahat! 🥳</p>';
-            }
-
-            // --- 3. LOGIKA MEMPERBARUI TANGGAL DI HEADER ---
-            const dateElement = document.getElementById('current-date');
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const todayString = new Date().toLocaleDateString('id-ID', options);
-            dateElement.textContent = todayString;
-        });
-
-    </script>
+        </section>
+    </main>
 </body>
 </html>
