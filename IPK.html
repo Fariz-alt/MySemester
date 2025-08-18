@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator IPK - StudentHub</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* --- THEME & GLOBAL STYLES (Konsisten dengan sebelumnya) --- */
+        :root {
+            --sidebar-width: 260px;
+            --sidebar-width-collapsed: 80px;
+            --primary-color: #007BFF;
+            --background-color: #F8FAFC;
+            --card-bg-color: #FFFFFF;
+            --text-color: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --danger-color: #DC2626;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--background-color); color: var(--text-color); }
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* --- SIDEBAR (Konsisten dengan sebelumnya) --- */
+        .sidebar { width: var(--sidebar-width); background: var(--card-bg-color); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; flex-shrink: 0; transition: width 0.3s ease; position: fixed; top: 0; left: 0; height: 100%; z-index: 100; }
+        .sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; height: 70px; }
+        .logo-group { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-icon { font-size: 1.75rem; color: var(--primary-color); }
+        .logo-text { font-size: 1.25rem; font-weight: 700; color: var(--primary-color); }
+        .sidebar nav { padding: 1rem; flex-grow: 1; }
+        .sidebar nav a { display: flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 500; white-space: nowrap; }
+        .sidebar nav a i { font-size: 1.2rem; width: 24px; text-align: center; }
+        .sidebar nav a:hover { background-color: #e6f2ff; color: var(--primary-color); }
+        .sidebar nav a.active { background-color: var(--primary-color); color: #fff; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex-grow: 1; padding: 1.5rem; margin-left: var(--sidebar-width); transition: margin-left 0.3s ease; }
+        header { margin-bottom: 2rem; }
+        .header-title h1 { font-size: 2rem; font-weight: 700; }
+        
+        /* --- KALKULATOR STYLES --- */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .form-section { background-color: var(--card-bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; }
+        .form-section h2 { font-size: 1.25rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { flex: 1; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+        
+        .course-row { display: grid; grid-template-columns: 3fr 1fr 1fr auto; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
+        .btn-secondary { background-color: #e6f2ff; color: var(--primary-color); }
+        .btn-danger { background-color: #fee2e2; color: var(--danger-color); }
+        .btn-primary { width: 100%; padding: 1rem; font-size: 1.1rem; background-color: var(--primary-color); color: #fff; margin-top: 1rem; }
+
+        /* --- RESULTS CARD --- */
+        .results-section { position: sticky; top: 1.5rem; }
+        .results-card { background-color: var(--card-bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center; }
+        .results-card h2 { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-muted); }
+        .result-item { margin-bottom: 1.5rem; }
+        .result-item p { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .result-item span { font-size: 3rem; font-weight: 700; color: var(--primary-color); }
+        .results-card.hidden { display: none; }
+
+        @media (max-width: 992px) {
+            .calculator-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"> </div>
+            <nav>
+                <a href="index.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+                <a href="matkul.html"><i class="fa-solid fa-book"></i><span>Mata Kuliah</span></a>
+                <a href="tugas.html"><i class="fa-solid fa-list-check"></i><span>Tugas</span></a>
+                <a href="jadwal.html"><i class="fa-solid fa-calendar-days"></i><span>Jadwal</span></a>
+                <a href="kalkulator-ipk.html" class="active"><i class="fa-solid fa-calculator"></i><span>Kalkulator IPK</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-title">
+                    <h1>Kalkulator IPK & IP Semester</h1>
+                </div>
+            </header>
+
+            <div class="calculator-container">
+                <div class="input-section">
+                    <div class="form-section">
+                        <h2>Data Kumulatif Sebelumnya</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="prev-ipk">IPK Lama</label>
+                                <input type="number" id="prev-ipk" step="0.01" min="0" max="4" placeholder="Contoh: 3.50">
+                            </div>
+                            <div class="form-group">
+                                <label for="prev-sks">Total SKS Lulus Sebelumnya</label>
+                                <input type="number" id="prev-sks" min="0" placeholder="Contoh: 98">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-top: 2rem;">
+                        <h2>Mata Kuliah Semester Ini</h2>
+                        <div id="courses-container">
+                            </div>
+                        <button class="btn btn-secondary" id="add-course-btn" style="margin-top: 1rem;">
+                            <i class="fa-solid fa-plus"></i> Tambah Mata Kuliah
+                        </button>
+                    </div>
+
+                    <button class="btn btn-primary" id="calculate-btn">Hitung IPK</button>
+                </div>
+
+                <div class="results-section">
+                    <div class="results-card hidden" id="results-card">
+                        <h2>Hasil Perhitungan</h2>
+                        <div class="result-item">
+                            <p>IP Semester (IPS)</p>
+                            <span id="ips-result">0.00</span>
+                        </div>
+                        <hr style="border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <div class="result-item">
+                            <p>IP Kumulatif (IPK) Terbaru</p>
+                            <span id="ipk-result">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const coursesContainer = document.getElementById('courses-container');
+        const addCourseBtn = document.getElementById('add-course-btn');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultsCard = document.getElementById('results-card');
+        
+        // Peta Nilai Huruf ke Angka
+        const gradePoints = { 'A': 4.0, 'A-': 3.75, 'B+': 3.25, 'B': 3.0, 'B-': 2.75, 'C+': 2.25, 'C': 2.0, 'D': 1.0, 'E': 0.0 };
+
+        // Fungsi untuk membuat satu baris input mata kuliah baru
+        const createCourseRow = () => {
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.innerHTML = `
+                <div class="form-group">
+                    <input type="text" placeholder="Nama Mata Kuliah (Opsional)">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="sks-input" min="1" placeholder="SKS">
+                </div>
+                <div class="form-group">
+                    <select class="grade-select">
+                        <option value="A">A</option> <option value="A-">A-</option>
+                        <option value="B+">B+</option> <option value="B">B</option> <option value="B-">B-</option>
+                        <option value="C+">C+</option> <option value="C">C</option>
+                        <option value="D">D</option> <option value="E">E</option>
+                    </select>
+                </div>
+                <button class="btn btn-danger remove-row-btn"><i class="fa-solid fa-trash"></i></button>
+            `;
+            // Tambahkan event listener untuk tombol hapus
+            row.querySelector('.remove-row-btn').addEventListener('click', () => row.remove());
+            coursesContainer.appendChild(row);
+        };
+
+        // Fungsi untuk melakukan perhitungan
+        const calculateGPA = () => {
+            // 1. Ambil data kumulatif sebelumnya
+            const prevIPK = parseFloat(document.getElementById('prev-ipk').value) || 0;
+            const prevSKS = parseInt(document.getElementById('prev-sks').value) || 0;
+            const prevTotalPoints = prevIPK * prevSKS;
+
+            // 2. Hitung total nilai dan SKS semester ini
+            let semesterTotalPoints = 0;
+            let semesterTotalSKS = 0;
+            const courseRows = coursesContainer.querySelectorAll('.course-row');
+            
+            courseRows.forEach(row => {
+                const sks = parseInt(row.querySelector('.sks-input').value) || 0;
+                const grade = row.querySelector('.grade-select').value;
+                if (sks > 0) {
+                    semesterTotalSKS += sks;
+                    semesterTotalPoints += sks * gradePoints[grade];
+                }
+            });
+
+            // 3. Hitung IPS
+            const ips = semesterTotalSKS > 0 ? (semesterTotalPoints / semesterTotalSKS) : 0;
+
+            // 4. Hitung IPK baru
+            const newTotalSKS = prevSKS + semesterTotalSKS;
+            const newTotalPoints = prevTotalPoints + semesterTotalPoints;
+            const newIPK = newTotalSKS > 0 ? (newTotalPoints / newTotalSKS) : 0;
+
+            // 5. Tampilkan hasil
+            document.getElementById('ips-result').textContent = ips.toFixed(2);
+            document.getElementById('ipk-result').textContent = newIPK.toFixed(2);
+            resultsCard.classList.remove('hidden');
+        };
+
+        // Tambah baris mata kuliah awal
+        createCourseRow();
+        createCourseRow();
+        createCourseRow();
+
+        // Event Listeners
+        addCourseBtn.addEventListener('click', createCourseRow);
+        calculateBtn.addEventListener('click', calculateGPA);
+    });
+    </script>
+</body>
+</html>
