@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Absensi - Analisis Survival 01</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --dark-color: #14213d;
+            --background-light: #f5f7ff;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease-in-out;
+            --green-Hadir: #4CAF50;
+            --yellow-Sakit: #FFC107;
+            --orange-Izin: #FF9800;
+            --red-Alpha: #F44336;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: var(--background-light);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+        }
+        .absen-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1500px;
+        }
+        .absen-table th, .absen-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .absen-table th {
+            background-color: var(--dark-color);
+            color: white;
+            font-weight: 600;
+        }
+        .absen-table thead th:first-child, .absen-table thead th:nth-child(2) {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background-color: var(--dark-color);
+        }
+        .absen-table tbody th {
+            background-color: #f8f9fa;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            text-align: left;
+            padding-left: 15px;
+            color: black;
+            font-weight: 500;
+        }
+        .absen-table tbody td:first-child {
+            position: sticky;
+            left: 150px;
+            background-color: #f8f9fa;
+        }
+        .absen-table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .absen-table .hadir {
+            color: var(--green-Hadir);
+            font-weight: bold;
+        }
+        .absen-table .sakit {
+            color: var(--yellow-Sakit);
+            font-weight: bold;
+        }
+        .absen-table .izin {
+            color: var(--orange-Izin);
+            font-weight: bold;
+        }
+        .absen-table .alpha {
+            color: var(--red-Alpha);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Tabel Absensi</h1>
+            <p>Mata Kuliah: Analisis Survival 01</p>
+        </header>
+        <div class="table-container">
+            <table class="absen-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">NIM</th>
+                        <th rowspan="2">Nama Mahasiswa</th>
+                        <th colspan="16">Pertemuan</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    <tr><th>230112500001</th><th>FARAWATI HARUJU</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500007</th><th>NABYLA ISRANI ZAINAL</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500011</th><th>SUCI K</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500017</th><th>ALFARIDZI NASARUDDIN</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500019</th><th>A.ALFIYYAH SALWABILA SABIRIN</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500033</th><th>ZALDY</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112500037</th><th>RAHMAH ADNI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501002</th><th>DAENG NASRUNG IKHSAN RISWANDA HAMZAH</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501017</th><th>AZZAHRATUAENI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501026</th><th>MUHAMMAD SANDI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501033</th><th>NURUL KHAERIDA AMRAH</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501037</th><th>SILOMITA MUSTAKIM</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501039</th><th>MUTHMAINNAH NUR IZZAH</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501050</th><th>ALIEF DAMARJATI SULISTYODI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501052</th><th>RAMADHAN NUR RAHMAT</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501055</th><th>DEWI AURAH SYALSABILLAH FADJERI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501056</th><th>M. LUTHFI SARKAWI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501057</th><th>SILVIANA THE</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112501060</th><th>MUHAMMAD SYAPAQ NAJMUSSAQIB</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502005</th><th>JUHRIANA RASYID</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502014</th><th>MUHAMMAD FAIZ RAHMAN</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502016</th><th>AZZOHIR MIFTA NARRA</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502028</th><th>AHMAD ANSAR</th><td class="alpha">A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502032</th><th>A.MUH.DZAKWAN SUPARMAN</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502033</th><th>MUHAMMAD AMMAR FARRAS</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502035</th><th>MUHAMMAD WAHID PATTA</th><td class="alpha">A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>230112502045</th><th>PRASINTA KAMBUNO</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112500004</th><th>SALWA NURANNISA SALSABILA</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112500018</th><th>FATIMAH AZZAHRA</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112500023</th><th>PATONGANI. M</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112500031</th><th>ALFIA FHARANITA</th><td class="alpha">A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112501004</th><th>ROSDIANA</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112501019</th><th>NUR ISMATUL ARIFAH</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112501024</th><th>KHAIRUNNISA</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112501031</th><th>ZIDAN NUR QADLI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112501044</th><th>AYU DWI LESTARI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112502017</th><th>INDAR PRATIWI</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><th>240112502042</th><th>QURROTA A YUN</th><td class="hadir">H</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
