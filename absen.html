@@ -59,7 +59,6 @@
         .absen-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1500px;
         }
         .absen-table th, .absen-table td {
             border: 1px solid #dee2e6;
@@ -98,7 +97,6 @@
         .absen-table tbody tr:hover {
             background-color: #e9ecef;
         }
-        
         .absen-table .hadir {
             color: var(--green-Hadir);
             font-weight: bold;
@@ -116,6 +114,20 @@
             font-weight: bold;
         }
     </style>
+    <script>
+        function setViewportForDesktop() {
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            if (metaViewport) {
+                metaViewport.setAttribute('content', 'width=1400, initial-scale=1');
+            } else {
+                const newMeta = document.createElement('meta');
+                newMeta.name = 'viewport';
+                newMeta.content = 'width=1400, initial-scale=1';
+                document.head.appendChild(newMeta);
+            }
+        }
+        window.onload = setViewportForDesktop;
+    </script>
 </head>
 <body>
     <div class="container">
@@ -193,6 +205,5 @@
             </table>
         </div>
     </div>
-
 </body>
-</html>
+</html> 
