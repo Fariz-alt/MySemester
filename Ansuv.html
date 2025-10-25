@@ -1,437 +1,575 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Analisis Survival 01</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #4cc9f0;
-            --accent-color: #f72585;
-            --dark-color: #14213d;
-            --light-color: #f8f9fa;
-            --background-light: #f5f7ff;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease-in-out;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Analisis Survival 01</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+  <!-- Font & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
-        body {
-            background-color: var(--background-light);
-            color: var(--dark-color);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+  <style>
+    /* =========================
+       Variables & Base
+       ========================= */
+    :root{
+      --blue-1: #4361ee;       /* primary blue */
+      --blue-2: #4cc9f0;       /* secondary sky */
+      --pink:  #f72585;        /* accent (merah pink) */
+      --gold:  #ffb703;        /* gold */
+      --green: #2d6a4f;        /* hijau */
+      --dark:  #14213d;
+      --muted: #6c757d;
+      --bg:    #fbfdff;
+      --card-shadow: 0 8px 20px rgba(20,33,61,0.06);
+      --radius: 12px;
+      --gap: 18px;
+      --max-width: 1200px;
+    }
 
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 20px;
-        }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #f0f5ff 100%);
+      color:var(--dark);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
 
-        .header {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block;height:auto}
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 5px;
-        }
-        
-        /* Tambahan untuk tombol Absen */
-        .header .action-buttons {
-            margin-top: 15px;
-        }
-        .header .action-buttons .absent-btn {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-block;
-        }
-        .header .action-buttons .absent-btn:hover {
-            background-color: #c9184a;
-        }
-        .absent-btn i {
-            margin-right: 8px;
-        }
+    /* =========================
+       Layout
+       ========================= */
+    .wrap{
+      max-width:var(--max-width);
+      margin:20px auto;
+      padding:16px;
+    }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 25px;
-            transition: var(--transition);
-        }
+    header.topbar{
+      background: linear-gradient(90deg, rgba(67,97,238,0.95), rgba(76,201,240,0.95));
+      color:white;
+      border-radius:14px;
+      padding:18px;
+      box-shadow:var(--card-shadow);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .brand h1{
+      font-size:1.15rem;
+      margin:0;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .brand p{margin:0;font-size:0.85rem;opacity:0.95}
 
-        .card h2 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
+    .header-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
 
-        .card h2 i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--pink);
+      color:white;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:0.95rem;
+      box-shadow: 0 6px 18px rgba(247,37,133,0.12);
+      border:0;
+      cursor:pointer;
+      transition: transform .16s ease, box-shadow .16s ease;
+      text-decoration:none;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.12);
+      color:white;
+      font-weight:600;
+      padding:9px 12px;
+    }
+    .btn.gold{
+      background:var(--gold);
+      color:var(--dark);
+      box-shadow:none;
+    }
 
-        .status-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #e6f7ff;
-        }
+    /* Grid */
+    .grid{
+      display:grid;
+      gap:var(--gap);
+      margin-top:18px;
+    }
 
-        .status-box.masuk {
-            background-color: #d4edda;
-            color: #155724;
-        }
+    /* mobile: single column */
+    .grid-2{
+      grid-template-columns: 1fr;
+    }
 
-        .status-box.tidak-masuk {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .status-icon {
-            font-size: 2em;
-        }
+    /* Card */
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.98),#ffffff);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--card-shadow);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{ transform:translateY(-6px) }
 
-        .chat-bukti {
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .chat-bukti img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+    .card h2{
+      margin:0 0 12px 0;
+      font-size:1.05rem;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--dark);
+      border-bottom:2px solid rgba(67,97,238,0.06);
+      padding-bottom:10px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:0.92rem;
+    }
 
-        .task-list {
-            list-style: none;
-        }
+    /* profile */
+    .profile{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .avatar{
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid rgba(67,97,238,0.12);
+      flex:0 0 72px;
+      background:linear-gradient(180deg,#fff,#f6f9ff);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .profile .meta h3{margin:0;font-size:1rem}
+    .profile .meta p{margin:6px 0 0 0;font-size:0.9rem;color:var(--muted)}
 
-        .task-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
+    /* status box */
+    .status{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(90deg,#f8fff4,#ffffff);
+      border:1px solid rgba(45,106,79,0.06);
+    }
+    .status.warn{
+      background:linear-gradient(90deg,#fff7e6,#ffffff);
+      border:1px solid rgba(255,183,3,0.06);
+    }
+    .status .ico{
+      font-size:1.8rem;
+      color:var(--blue-1);
+      background:white;
+      padding:10px;
+      border-radius:10px;
+      box-shadow:0 6px 16px rgba(20,33,61,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:56px;height:56px;
+    }
+    .status .content h4{margin:0;font-size:1rem}
+    .status .content p{margin:6px 0 0 0;color:var(--muted);font-size:0.9rem}
 
-        .task-item:last-child {
-            border-bottom: none;
-        }
-        
-        .task-title {
-            font-weight: 500;
-        }
+    /* Materi table responsive */
+    .table-wrap{
+      overflow:auto;
+      border-radius:10px;
+      margin-top:8px;
+      border:1px solid rgba(20,33,61,0.03);
+    }
+    table.materi{
+      width:100%;
+      border-collapse:collapse;
+      min-width:720px; /* allow horizontal scroll on narrow screens */
+    }
+    table.materi th, table.materi td{
+      text-align:left;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(20,33,61,0.04);
+      vertical-align:middle;
+      font-size:0.95rem;
+    }
+    table.materi th{
+      background:#fbfbff;
+      font-weight:600;
+      color:var(--dark);
+      font-size:0.92rem;
+    }
 
-        .task-date {
-            color: #888;
-            font-size: 0.9em;
-        }
+    .access-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:8px;
+      background:var(--blue-1);
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      font-size:0.88rem;
+    }
 
-        .ref-list {
-            list-style: none;
-        }
+    /* Tasks */
+    .task-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+    .task{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(20,33,61,0.04);
+      background:linear-gradient(180deg,#fff,#fbfdff);
+    }
+    .task .left{display:flex;gap:12px;align-items:flex-start;flex:1}
+    .task .title{font-weight:600;font-size:0.95rem}
+    .task .meta{font-size:0.86rem;color:var(--muted)}
+    .task .task-actions{display:flex;gap:8px;align-items:center}
 
-        .ref-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .ref-item:last-child {
-            border-bottom: none;
-        }
+    /* References & notification */
+    .ref-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .ref-item a{font-weight:700;color:var(--blue-1)}
+    .notice{
+      background:linear-gradient(180deg,#fffaf0,#fff);
+      border-radius:10px;
+      padding:12px;
+      border:1px solid rgba(255,183,3,0.06);
+      color:#7a5a00;
+      font-weight:600;
+    }
 
-        .ref-title {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
+    /* small helpers */
+    .muted{color:var(--muted);font-size:0.9rem}
+    .row{display:flex;gap:12px;align-items:center}
+    .stack{display:flex;flex-direction:column;gap:10px}
 
-        .ref-author {
-            font-style: italic;
-            font-size: 0.9em;
-        }
+    /* Responsive breakpoints */
+    @media(min-width:720px){
+      .grid-2{grid-template-columns: 2fr 1fr;}
+      .brand h1{font-size:1.2rem}
+    }
 
-        .notification {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 20px;
-        }
+    @media(min-width:980px){
+      .wrap{padding:22px}
+      .brand h1{font-size:1.25rem}
+    }
 
-        .notification strong {
-            display: block;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
+    /* touch target larger on small screens */
+    @media(max-width:420px){
+      .btn{padding:12px 16px;font-size:0.98rem}
+      .access-btn{padding:10px 12px;font-size:0.95rem}
+      .avatar{width:84px;height:84px;flex:0 0 84px}
+    }
 
-        /* ----- Gaya Profil Dosen ----- */
-        .lecturer-profile {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .lecturer-profile img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-        }
-        .lecturer-info h3 {
-            font-size: 1.2em;
-            margin: 0;
-            color: var(--dark-color);
-        }
-        .lecturer-info p {
-            font-size: 0.9em;
-            color: #666;
-            margin: 5px 0 0;
-        }
-        
-        /* ----- Gaya Tabel Materi ----- */
-        .materi-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .materi-table th, .materi-table td {
-            border: 1px solid #dee2e6;
-            padding: 12px;
-            text-align: left;
-        }
-        .materi-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-        .access-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-        }
-        .access-btn:hover {
-            background-color: #3a0ca3;
-        }
-
-        @media (min-width: 768px) {
-            .dashboard-container {
-                grid-template-columns: 2fr 1fr;
-            }
-
-            .main-content {
-                grid-column: 1 / 2;
-            }
-            
-            .sidebar-content {
-                grid-column: 2 / 3;
-            }
-        }
-    </style>
+    /* Utility: subtle footer */
+    footer.small{
+      text-align:center;
+      margin-top:18px;
+      color:var(--muted);
+      font-size:0.85rem;
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap" role="application" aria-label="Dashboard Analisis Survival 01">
 
-    <header class="header">
-        <h1>Analisis Survival 01</h1>
-        <div class="action-buttons">
-            <a href="absen.html" class="absent-btn" target="_blank"><i class="uil uil-users-alt"></i>Absen Kelas</a>
+    <!-- Header -->
+    <header class="topbar" role="banner">
+      <div class="brand" aria-hidden="false">
+        <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--blue-1),var(--blue-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700">
+          AS
         </div>
+        <div>
+          <h1>Analisis Survival 01</h1>
+          <p class="sub">Kuliah / Database / Materi & Tugas</p>
+        </div>
+      </div>
+
+      <div class="header-actions" role="navigation" aria-label="Aksi">
+        <a class="btn" href="absen.html" target="_blank" rel="noopener">
+          <i class="uil uil-users-alt"></i><span>Absen Kelas</span>
+        </a>
+        <a class="btn secondary" href="#" title="Notifikasi">
+          <i class="uil uil-bell"></i>
+        </a>
+        <a class="btn gold" href="https://docs.google.com/spreadsheets/d/1V3iqB2yGgMyEtNzdRZ20JD-ROuACpX6O2disK4hosXM/edit?usp=sharing" target="_blank" rel="noopener">
+          Spreadsheet
+        </a>
+      </div>
     </header>
 
-    <div class="dashboard-container">
+    <!-- Main grid -->
+    <main class="grid grid-2" role="main" aria-label="Konten utama">
 
-        <div class="main-content">
+      <!-- Left / Main content -->
+      <section class="card" aria-labelledby="profile-title">
+        <h2 id="profile-title"><i class="uil uil-user-circle"></i>Profil Dosen</h2>
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">
+            <img src="https://scholar.googleusercontent.com/citations?view_op=view_photo&user=eC__gSEAAAAJ&citpid=1" alt="Foto Dosen Annisa Syalsabila">
+          </div>
+          <div class="meta">
+            <h3>Annisa Syalsabila, S.Stat., M.Stat.</h3>
+            <p class="sub">Dosen Pengampu Analisis Survival 01</p>
+            <p class="muted"><strong>Kontak:</strong> 0813-9569-9448</p>
+          </div>
+        </div>
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">
+            <img src="http://statistika.fmipa.unm.ac.id/wp-content/uploads/sites/16/2021/03/ASW-min.png" alt="Foto Dosen Annisa Syalsabila">
+          </div>
+          <div class="meta">
+            <h3>	Aswi, S.Pd., M.Si. Ph.Dt.</h3>
+            <p class="sub">Dosen Pengampu Analisis Survival 01</p>
+            <p class="muted"><strong>Kontak:</strong> 0852-4142-6969</p>
+          </div>
+        </div>
+        <div style="margin-top:14px">
 
-            <div class="card">
-                <h2><i class="uil uil-user-circle"></i>Profil Dosen</h2>
-                <div class="lecturer-profile">
-                    <img src="https://scholar.googleusercontent.com/citations?view_op=view_photo&user=eC__gSEAAAAJ&citpid=1" alt="Foto Dosen">
-                    <div class="lecturer-info">
-                        <h3>Annisa Syalsabila, S.Stat., M.Stat.</h3>
-                        <p>Dosen Pengampu Analisis Survival 01</p>
-                        <p><strong>Kontak:</strong> 0813-9569-9448</p>
-                    </div>
-                </div>
-            </div>
+      </section>
 
-            <div class="card" style="margin-top: 20px;">
-                <h2><i class="uil uil-check-circle"></i>Status Kehadiran Dosen</h2>
-                <div class="status-box masuk">
-                    <span class="status-icon"><i class="uil uil-calendar-alt"></i></span>
-                    <div> 
-                        <h3>Dosen Belum Konfirmasi</h3>
-                        <p>Hari/Tanggal: Kamis, 28 Agustus 2025</p>
-                    </div>
-                </div>
-                <div class="chat-bukti">
-                    <p>Bukti Konfirmasi Chat:</p>
-                    <img src="data:image/png;base64,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" alt="Bukti Chat Konfirmasi Dosen">
-                </div>
-            </div>
-            
-            <div class="card" style="margin-top: 20px;">
-                <h2><i class="uil uil-book-reader"></i>Materi Perkuliahan</h2>
-                <table class="materi-table">
-                    <thead>
-                        <tr>
-                            <th>Pertemuan</th>
-                            <th>Materi</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1 | 21 Agustus 2025</td>
-                            <td>Pendahuluan Analisis Survival, Data Censoring, Survival Function dan Hazard Function</td>
-                            <td><a href="https://drive.google.com/file/d/1EZlAE1hYfWONIfdAPln243dAaoPlNryM/view?usp=sharing" class="access-btn" target="_blank">Materi</a></td>
-                            <td><a href="https://drive.google.com/file/d/1Uq-zqBRv7kA1tODBVroxWyaCy0HlSz2n/view?usp=drivesdk" class="access-btn" target="_blank">PPT</a></td>
-                            <td><a href="" class="access-btn" target="_blank"></a></td>
-                        </tr>
-                        <tr>
-                            <td>2 | 28 Agustus 2025</td>
-                            <td>Survival Function dan Kurva Keplen Meier</td>
-                            <td><a href="https://drive.google.com/file/d/1tAXwAHbbkgi1KLklSXYCzFunvnERf3m-/view?usp=sharing" class="access-btn" target="_blank">Materi</a></td>
-                            <td><a href="https://youtu.be/agusX_5CPYE" class="access-btn" target="_blank">Video</a></td>
-                            <td><a href="https://youtu.be/uvp_cmmOiAA" class="access-btn" target="_blank">Video</a></td>
-                        </tr>
-                        <tr>
-                        <tr>
-                            <td>3 | 4 September 2025</td>
-                            <td>Log Rank Test</td>
-                            <td><a href="https://drive.google.com/file/d/1TbInUntbrslRaSrVpu5SJ1-M-_hKXq3Q/view?usp=sharing" class="access-btn" target="_blank">PPT</a></td>
-                            <td><a href="https://youtu.be/sitCP7jK3g8" class="access-btn" target="_blank">Video 1</a></td>
-                        </tr>
-                         <tr>
-                            <td>4 | 11 September 2025</td>
-                            <td>Log Rank Test/Review Tugas</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>5 | 18 September 2025</td>
-                            <td>Model Parametrik</td>
-                            <td><a href="https://youtu.be/nGBH5u9tMOg" class="access-btn" target="_blank">Video 1</a></td>
-                        </tr>
-                        <tr>
-                    </tbody>
-                </table>
-            </div>
+      <!-- Right / Sidebar -->
+      <aside style="display:flex;flex-direction:column;gap:var(--gap)">
 
+        <!-- Materi Card (full width on sidebar) -->
+        <div class="card" aria-labelledby="materi-title">
+          <h2 id="materi-title"><i class="uil uil-book-reader"></i>Materi Perkuliahan</h2>
+
+          <div class="table-wrap" role="region" aria-label="Tabel materi pertemuan">
+            <table class="materi" aria-describedby="materi-desc">
+              <thead>
+                <tr>
+                  <th>Pertemuan</th>
+                  <th>Materi</th>
+                  <th colspan="3">Sumber</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1 | 21 Agustus 2025</td>
+                  <td>Pendahuluan Analisis Survival, Censoring, Survival & Hazard</td>
+                  <td><a class="access-btn" href="https://drive.google.com/file/d/1EZlAE1hYfWONIfdAPln243dAaoPlNryM/view?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-file-landscape"></i> Materi</a></td>
+                  <td><a class="access-btn" href="https://drive.google.com/file/d/1Uq-zqBRv7kA1tODBVroxWyaCy0HlSz2n/view?usp=drivesdk" target="_blank" rel="noopener"><i class="uil uil-file-check"></i> PPT</a></td>
+                  <td><span class="muted">—</span></td>
+                </tr>
+
+                <tr>
+                  <td>2 | 28 Agustus 2025</td>
+                  <td>Survival Function & Kurva Kaplan Meier</td>
+                  <td><a class="access-btn" href="https://drive.google.com/file/d/1tAXwAHbbkgi1KLklSXYCzFunvnERf3m-/view?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-file-landscape"></i> Materi</a></td>
+                  <td><a class="access-btn" href="https://youtu.be/agusX_5CPYE" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i> Video</a></td>
+                  <td><a class="access-btn" href="https://youtu.be/uvp_cmmOiAA" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i> Video</a></td>
+                </tr>
+
+                <tr>
+                  <td>3 | 4 September 2025</td>
+                  <td>Log Rank Test</td>
+                  <td><a class="access-btn" href="https://drive.google.com/file/d/1TbInUntbrslRaSrVpu5SJ1-M-_hKXq3Q/view?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-file-check"></i> PPT</a></td>
+                  <td><a class="access-btn" href="https://youtu.be/sitCP7jK3g8" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i> Video</a></td>
+                  <td><span class="muted">—</span></td>
+                </tr>
+
+                <tr>
+                  <td>4 | 11 September 2025</td>
+                  <td>Log Rank Test | Review Tugas</td>
+                  <td colspan="3"><span class="muted">Tidak Ada Materi</span></td>
+                </tr>
+
+                <tr>
+                  <td>5 | 18 September 2025</td>
+                  <td>Model Parametrik</td>
+                  <td colspan="2"><a class="access-btn" href="https://youtu.be/nGBH5u9tMOg" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i> Video</a></td>
+                  <td><span class="muted">—</span></td>
+                </tr>
+                <tr>
+                  <td>6 | 25 September 2025</td>
+                  <td>AFT Model</td>
+                  <td colspan="3"><span class="muted">Coming Soon</span></td>
+                </tr>
+                <tr>
+                  <td>7 | 2 Oktober 2025</td>
+                  <td>Presentase Hasil Reviuw Jurnal</td>
+                  <td colspan="3"><span class="muted">Tidak Ada Materi</span></td>
+                </tr>     
+                <tr>
+                  <td>8 | 15 Oktober 2025</td>
+                  <td>UTS</td>
+                  <td colspan="3"><span class="muted">Coming Soon</span></td>
+                </tr>  
+                <tr>
+                  <td>9 | 16 September 2025</td>
+                  <td>Pembagian Kelompok dan Review Introduction </td>
+                  <td colspan="2"><a class="access-btn" href="https://blogger.googleusercontent.com/img/a/AVvXsEgmziCEyOZySWHk3NhcOgWd_8u3ClyQx8jsZuY5U1SYmQVy8WZeZBTjeG-6AKfUoSH6cQ7gvrPQvko9tROH6GkQCZLa4ZQos_Fn-lzhB66zuU4Yu2y4K7ALECHYEp1xMzFmIrSITmuBqxCO5MnHsP-6VQs6Av93MNmchhTe67Jqc0-JnROE9b18VjplICU" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i> Daftar Kelompok</a></td>
+                  <td><span class="muted">—</span></td>
+                </tr>                
+                <tr>
+                  <td>10 | 23 September 2025</td>
+                  <td>The Cox Proportional Hazards Model ans Its Characteristics </td>
+                  <td colspan="2"><a class="access-btn" href="https://docs.google.com/document/d/1gsO_AbGeYHGuI7sR-Ve90QhHn9uqmYPs/edit?usp=sharing&ouid=111779140947512189902&rtpof=true&sd=true" target="_blank" rel="noopener"><i class="uil uil-play-circle"></i>Makalah</a></td>
+                  <td><span class="muted">—</span></td>
+                </tr>  
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="sidebar-content">
+        <!-- Tugas Card -->
+        <div class="card" aria-labelledby="tugas-title">
+          <h2 id="tugas-title"><i class="uil uil-file-alt"></i>Tugas Terkini</h2>
 
-            <div class="card">
-                <h2><i class="uil uil-file-alt"></i>Tugas Terkini</h2>
-                <ul class="task-list">
-                    <li class="task-item">
-                        <span class="task-title">Tugas Individu 1 (Tulis Tangan di kertas Polio): Membuat Masing-Masing 2 Contoh Perjenis Data Tersensor, dan Mencari Data yang Terdiri dari 2 Group dan mencari Survival Time Average dan Hazard Rate </span>
-                        <span class="task-date">Tenggat Waktu: 28 Agustus 2025</span>
-                    <div class="action-buttons">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdJm4EnEJcaRIDMX2Yet3roULVMbJ0t_0vkAryxbquI9v9jOw/viewform?usp=dialog" class="access-btn" target="_blank"><i class="uil uil-task"></i>GForm</a>
-                    </div>
-                    </li>
-                    <li class="task-item">
-                        <span class="task-title">Tugas Individu 2 File Excel dan R/SPSS: Membuat Perhitungan KM dan Kurva KM di R atau SPSS </span>
-                        <span class="task-date">Tenggat Waktu: 28 Agustus 2025 23.59 WITA</span>
-                    <div class="action-buttons">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScglzLw3OZabgR7MqJrzZyTTCrIzWDgMR39T2p1e1lB28VrQ/viewform?usp=header" class="access-btn" target="_blank"><i class="uil uil-task"></i>Close</a>
-                    </div>
-                    </li>
-                    <li class="task-item">
-                        <span class="task-title">Tugas Individu 3 (Excel, R dan Laporan): Membuat Perhitungan KM di excel dan Kurva KM di R atau SPSS dengan menggunakan contoh soal pada tugas 1, dan hasilnya dituliskan dalam bentuk laporan </span>
-                        <span class="task-date">Tenggat Waktu:  4 September 2025 (Sebelum Masuk Kelas)</span>
-                    <div class="action-buttons">
-                        <a href="https://drive.google.com/drive/folders/1fx992KlKcmuSD5CT0Iw7FftUbC1Qm3fv?usp=sharing" class="access-btn" target="_blank"><i class="uil uil-task"></i>Drive</a>
-                    </div>
-                    </li>
-                    <li class="task-item">
-                        <span class="task-title">Tugas Individu 4 : Mengerjakan Soal</span>
-                        <span class="task-date">Tenggat Waktu: 11 September 2025</span>
-                    <div class="action-buttons">
-                        <a href="https://forms.gle/88aBtAGTY6SXLzjJ9" class="access-btn" target="_blank"><i class="uil uil-task"></i>GForm</a>
-                    </div>
-                    </li>
-                    <li class="task-item">
-                        <span class="task-title">Tugas Individu 5 : Log Logistic : f(t), F(t), S(t), s(t)</span>
-                        <span class="task-date">Sebelum Pertemuan 6</span>
-                    <div class="action-buttons">
-                        <a href="" class="access-btn" target="_blank"><i class="uil uil-task"></i>NA</a>
-                    </div>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="card" style="margin-top: 20px;">
-                <h2><i class="uil uil-book-alt"></i>Referensi Buku</h2>
-                <ul class="ref-list">
-                    <li class="ref-item">
-                        <a href = "https://xsliulab.github.io/Workshop/2021/week3/survival-analysis-book.pdf" class="ref-title">Applied Survival
-Analysis Using R</a><br>
-                        <span class="ref-author">Dirk F. Moore</span>
-                    </li>
-                    <li class="ref-item">
-                        <a href = "https://www.uop.edu.pk/ocontents/survival-analysis-self-learning-book.pdf" class="ref-title">Survival Analysis: A Self-Learning Text</a><br>
-                        <span class="ref-author">Kleinbaum & Klein</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="card" style="margin-top: 20px;">
-                <h2><i class="uil uil-bell"></i>Pemberitahuan</h2>
-                <div class="notification">
-                    <strong>PENTING:</strong>
-                        <a href = "https://docs.google.com/spreadsheets/d/1V3iqB2yGgMyEtNzdRZ20JD-ROuACpX6O2disK4hosXM/edit?usp=sharing" class="ref-title">Spreadsheet</a>
+          <ul class="task-list" aria-live="polite">
+            <li class="task" role="group">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 1 (Tulis Tangan): Contoh Data Tersensor & hitung survival Average</div>
+                  <div class="meta">Tenggat: 28 Agustus 2025 10.05 WITA</div>
                 </div>
-            </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1CIS94H2flh_E9mFACUw9j7pY1-Wq8yItyGQzFskMQIN0JgHS_Gbp_i2h7OdMt8QuI4dZ0_S0?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-task"></i> Drive</a>
+              </div>
+            </li>
 
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 2: KM & Kurva KM di R/SPSS (File Excel)</div>
+                  <div class="meta">Tenggat: 28 Agustus 2025 23:59 WITA</div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1qiA3BG705PgZCUdROtqpqz84aZxZBS0JMgILqDlDTTOwzi8zmfd8lbpUWFP_cpw6Wkpk4Pn0?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-task"></i> Drive</a>
+              </div>
+            </li>
+
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 3: KM di Excel + Kurva di R/SPSS (Laporan)</div>
+                  <div class="meta">Tenggat: 4 September 2025 10.05 WITA</div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1fx992KlKcmuSD5CT0Iw7FftUbC1Qm3fv?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-drive"></i> Drive</a>
+              </div>
+            </li>
+
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 4: Menyelesaikan Masalah Log Rank</div>
+                  <div class="meta">Tenggat: 11 September 2025 10.05 WITA </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://forms.gle/88aBtAGTY6SXLzjJ9" target="_blank" rel="noopener"><i class="uil uil-task"></i> Submit</a>
+              </div>
+            </li>
+
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 5: Log Logistic — f(t), F(t), S(t), s(t)</div>
+                  <div class="meta"> Tenggat : 25 September 2025 10.05 WITA </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://forms.gle/b3TogCpKMFQYUACL7" target="_blank" rel="noopener"><i class="uil uil-task"></i> Submit</a>
+              </div>
+            </li>
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Individu 6: Buat Laporan AFT Model dari Hasil R</div>
+                  <div class="meta"> Tenggat : 25 September 2025 12.35 WITA </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://forms.gle/RGMGHz7Jfypocg3f9" target="_blank" rel="noopener"><i class="uil uil-task"></i> Submit</a>
+              </div>
+            </li>
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Projek: Buat Laporan Hasil Review Jurnal</div>
+                  <div class="meta"> Tenggat : 2 Oktober 2025 08.00 WITA </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1LUNp0Ztdj3833mmWylVn1tVJuYeXvaiQ?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-task"></i> Drive</a>
+              </div>
+            </li>
+            <li class="task">
+              <div class="left">
+                <div>
+                  <div class="title">Tugas Kelompok : Makalah </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1Gm1xvPokUtK_cjzhUJasHaWjIy-fhteH?usp=sharing" target="_blank" rel="noopener"><i class="uil uil-task"></i> Grup 1</a>
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1hzY_RGdRmK9vhq0-QbdFoyYhaY3Aq-r0?usp=drive_link" target="_blank" rel="noopener"><i class="uil uil-task"></i> Grup 2</a>
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1RgNlLxoTwwqPEOgZ6zdLuZ5r03livix4?usp=drive_link" target="_blank" rel="noopener"><i class="uil uil-task"></i> Grup 3</a>
+                <a class="access-btn" href="https://drive.google.com/drive/folders/1ZLhssz-EVvf37iBb5E2KiTpild3X0laV?usp=drive_link" target="_blank" rel="noopener"><i class="uil uil-task"></i> grup 4</a>
+              </div>
+            </li>
+          </ul>
         </div>
 
-    </div>
+        <!-- Referensi Card -->
+        <div class="card" aria-labelledby="ref-title">
+          <h2 id="ref-title"><i class="uil uil-book-alt"></i>Referensi Buku</h2>
 
+          <ul class="ref-list">
+            <li class="ref-item"><a href="https://xsliulab.github.io/Workshop/2021/week3/survival-analysis-book.pdf" target="_blank" rel="noopener">Applied Survival Analysis Using R</a><div class="ref-author">Dirk F. Moore</div></li>
+            <li class="ref-item"><a href="https://www.uop.edu.pk/ocontents/survival-analysis-self-learning-book.pdf" target="_blank" rel="noopener">Survival Analysis: A Self-Learning Text</a><div class="ref-author">Kleinbaum & Klein</div></li>
+          </ul>
+        </div>
+
+        <!-- Notification -->
+        <div class="card">
+          <h2><i class="uil uil-bell"></i>Pemberitahuan</h2>
+          <div class="notice">
+            <strong>PENTING:</strong> Spreadsheet kehadiran & tugas ada di <a href="https://docs.google.com/spreadsheets/d/1V3iqB2yGgMyEtNzdRZ20JD-ROuACpX6O2disK4hosXM/edit?usp=sharing" target="_blank" rel="noopener">Spreadsheet</a>
+          </div>
+        </div>
+
+      </aside>
+
+    </main>
+
+    <footer class="small">
+      © 2025 Analisis Survival 01 — dibuat untuk kenyamanan akses di HP & Laptop
+    </footer>
+
+  </div>
 </body>
 </html>
